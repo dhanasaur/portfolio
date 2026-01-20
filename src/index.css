@@ -1,0 +1,86 @@
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600&family=Syne:wght@400;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: 'Archivo', system-ui, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: dark;
+  background-color: #050505;
+  color: #F5F5F5;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@layer base {
+  body {
+    @apply bg-background text-text-main antialiased selection:bg-white selection:text-black overflow-x-hidden;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-display font-bold uppercase tracking-tighter;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .glass-panel {
+    @apply bg-surface/50 backdrop-blur-sm border border-white/5;
+  }
+
+  .bg-radial-gradient-fade {
+    background: radial-gradient(circle at center, transparent 0%, #0F1115 100%);
+  }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0F1115;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #22252B;
+  border-radius: 3px;
+}
+
+/* Cinematic System Initialization */
+@keyframes cinematic-system-reveal {
+  0% {
+    opacity: 0;
+    transform: translateY(14px);
+    letter-spacing: 0.1em;
+    filter: blur(2px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    letter-spacing: -0.05em;
+    filter: blur(0);
+  }
+}
+
+.animate-system-reveal {
+  opacity: 0;
+  animation: cinematic-system-reveal 1.6s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+  will-change: transform, opacity, letter-spacing, filter;
+}
