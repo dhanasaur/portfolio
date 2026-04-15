@@ -8,19 +8,33 @@ import Skills from './sections/Skills';
 import Achievements from './sections/Achievements';
 import Projects from './sections/Projects';
 import Contact from './sections/Contact';
+import ScrollProgress from './components/ScrollProgress';
+import SectionNavDots from './components/SectionNavDots';
+import { initScrollReveal } from './hooks/useScrollReveal';
 
 function App() {
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(true);
+
+  // useEffect(() => {
+  //   // Simulate initial load or wait for resources
+  //   const timer = setTimeout(() => setIsLoaded(true), 1000);
+  //   return () => clearTimeout(timer);
+  // }, []);
 
   useEffect(() => {
-    // Simulate initial load or wait for resources
-    const timer = setTimeout(() => setIsLoaded(true), 1000);
-    return () => clearTimeout(timer);
-  }, []);
+    if (isLoaded) {
+      // Small timeout to allow DOM to render before observing
+      const timer = setTimeout(() => {
+        initScrollReveal();
+      }, 50);
+      return () => clearTimeout(timer);
+    }
+  }, [isLoaded]);
 
   return (
     <>
       <div className="relative w-full min-h-screen text-text-main overflow-hidden bg-background">
+                <SectionNavDots />
         <Background />
 
         <AnimatePresence>
@@ -44,7 +58,7 @@ function App() {
               <Navbar />
               <main className="flex flex-col w-full space-y-24 pb-24">
                 <Hero />
-                <div className="relative w-full max-w-7xl mx-auto px-6 space-y-32">
+                <div className="relative w-full max-w-[95rem] mx-auto px-6 space-y-32">
                   <About />
                   <Skills />
                   <Achievements />

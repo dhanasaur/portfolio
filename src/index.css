@@ -43,9 +43,27 @@
     @apply bg-surface/50 backdrop-blur-sm border border-white/5;
   }
 
+  .glass-organic {
+    @apply bg-white/[0.03] backdrop-blur-md border border-white/10 rounded-2xl;
+  }
+
   .bg-radial-gradient-fade {
     background: radial-gradient(circle at center, transparent 0%, #0F1115 100%);
   }
+}
+
+/* Aurora WebGL canvas container */
+.aurora-container {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.aurora-container canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
 }
 
 /* Scrollbar */

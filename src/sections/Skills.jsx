@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 
 const domains = [
     {
@@ -20,7 +19,7 @@ const domains = [
         skills: [
             { name: "React", opacity: 1, story: "Virtual DOM isn't magic. Profiling rendering cycles taught me the cost of object literals." },
             { name: "Tailwind", opacity: 0.95, story: "Design tokens over hardcoded values. Consistency is key for long-term maintenance." },
-            { name: "Framer Motion", opacity: 0.85, story: "Motion conveys meaning. A jumpy animation breaks trust faster than a 404." }
+            { name: "Vanilla JS", opacity: 0.85, story: "Frameworks abstract the DOM, but understanding the underlying APIs is the real superpower." }
         ]
     },
     {
@@ -41,15 +40,16 @@ const Skills = () => {
     return (
         <section id="skills" className="w-full py-32 px-6 md:px-12 lg:px-24">
             <div className="max-w-7xl mx-auto flex flex-col items-start">
-                <h2 className="text-2xl font-heading text-white uppercase tracking-widest mb-6">
+                <h2 className="text-2xl font-heading text-white uppercase tracking-widest mb-6 reveal">
                     Competencies & War Stories
                 </h2>
 
                 <div className="w-full grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-8">
-                    {domains.map((domain) => (
-                        <motion.div
+                    {domains.map((domain, idx) => (
+                        <div
                             key={domain.id}
-                            className={`relative border-t border-white/10 pt-8 transition-all duration-500 ${activeDomain && activeDomain !== domain.id ? 'opacity-30 blur-[2px]' : 'opacity-100'
+                            style={{ transitionDelay: `${idx * 150}ms` }}
+                            className={`reveal relative border-t border-white/10 pt-8 transition-all duration-500 ${activeDomain && activeDomain !== domain.id ? 'opacity-30 blur-[2px]' : 'opacity-100'
                                 }`}
                             onMouseEnter={() => setActiveDomain(domain.id)}
                             onMouseLeave={() => setActiveDomain(null)}
@@ -75,15 +75,17 @@ const Skills = () => {
                                         </div>
 
                                         {/* War Story Reveal */}
-                                        <div className="h-0 overflow-hidden group-hover/skill:h-auto transition-all duration-300 ease-out">
-                                            <p className="pt-2 text-sm text-white italic border-l border-white/20 pl-3">
-                                                "{skill.story}"
-                                            </p>
+                                        <div className="grid grid-rows-[0fr] opacity-0 group-hover/skill:grid-rows-[1fr] group-hover/skill:opacity-100 transition-all duration-300 ease-out">
+                                            <div className="overflow-hidden">
+                                                <p className="pt-2 text-sm text-white italic border-l border-white/20 pl-3">
+                                                    "{skill.story}"
+                                                </p>
+                                            </div>
                                         </div>
                                     </div>
                                 ))}
                             </div>
-                        </motion.div>
+                        </div>
                     ))}
                 </div>
             </div>
