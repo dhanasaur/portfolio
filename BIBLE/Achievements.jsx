@@ -48,6 +48,7 @@ const Achievements = () => {
                         return (
                             <div
                                 key={item.id}
+                                style={{ transitionDelay: `${idx * 100}ms` }}
                                 className={`reveal border-b border-white/5 py-8 cursor-pointer group ${
                                     isOpen ? 'bg-white/[0.02]' : 'hover:bg-white/[0.01]'
                                 }`}

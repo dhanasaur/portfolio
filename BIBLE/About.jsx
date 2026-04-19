@@ -41,8 +41,9 @@ const TiltPhoto = ({ src }) => {
     const handleMouseMove = (e) => {
         const card = cardRef.current;
         if (!card) return;
+        // Store latest values; only commit to DOM inside RAF
         pendingRef.current = { clientX: e.clientX, clientY: e.clientY };
-        if (rafRef.current) return;
+        if (rafRef.current) return; // already scheduled
         rafRef.current = requestAnimationFrame(() => {
             const { clientX, clientY } = pendingRef.current;
             const rect = card.getBoundingClientRect();
@@ -62,6 +63,7 @@ const TiltPhoto = ({ src }) => {
         if (!card) return;
         card.style.transition = 'transform 0.6s cubic-bezier(0.23, 1, 0.32, 1)';
         card.style.transform = 'perspective(700px) rotateX(0deg) rotateY(0deg)';
+        // Remove inline transition after it completes so future RAF updates aren't sluggish
         setTimeout(() => {
             if (card) card.style.transition = 'none';
         }, 650);
@@ -72,6 +74,7 @@ const TiltPhoto = ({ src }) => {
             ref={cardRef}
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
+            // will-change only when the element actually moves — set via CSS hover
             className="group w-[456px] h-[456px] rounded-full overflow-hidden z-10"
             style={{ willChange: 'transform' }}
         >
@@ -93,26 +96,37 @@ const About = () => {
         >
             <div className="max-w-[95rem] w-full reveal">
                 <div className="relative glass-organic p-8 lg:p-20 overflow-hidden">
+                    {/* Static blurs — paint once, no perf cost */}
                     <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-secondary/10 rounded-full blur-3xl -z-10" />
                     <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-tertiary/10 rounded-full blur-3xl -z-10" />
+
                     <div className="flex flex-col lg:flex-row justify-between gap-20 items-center">
                         <div className="flex-1 space-y-10 lg:pr-12">
                             <h2 className="text-4xl md:text-5xl font-heading font-bold text-paper">
                                 About <span className="text-secondary">Me</span>
                             </h2>
-                            <p className="text-paper/80 leading-relaxed text-lg lg:text-xl reveal" style={{ transitionDelay: '100ms' }}>
+                            <p
+                                className="text-paper/80 leading-relaxed text-lg lg:text-xl reveal"
+                                style={{ transitionDelay: '100ms' }}
+                            >
                                 I am a Computer Science Undergraduate at{' '}
-                                <span className="text-white font-medium">Sri Krishna College of Engineering and Technology</span>{' '}
+                                <span className="text-white font-medium">
+                                    Sri Krishna College of Engineering and Technology
+                                </span>{' '}
                                 with a CGPA of{' '}
                                 <span className="text-secondary font-bold">
                                     <AnimatedCounter target={8.8} duration={1500} formatFn={v => v.toFixed(1)} />
                                 </span>.
                             </p>
-                            <p className="text-paper/60 leading-relaxed text-lg lg:text-xl reveal" style={{ transitionDelay: '200ms' }}>
+                            <p
+                                className="text-paper/60 leading-relaxed text-lg lg:text-xl reveal"
+                                style={{ transitionDelay: '200ms' }}
+                            >
                                 My focus lies in bridging the gap between theoretical AI models and robust
                                 backend systems. I engineer solutions that solve real-world problems with
                                 precision and scale.
                             </p>
+
                             <div className="flex gap-8 pt-6 reveal" style={{ transitionDelay: '300ms' }}>
                                 <div className="space-y-1">
                                     <span className="text-3xl font-heading font-bold text-white block">
@@ -129,14 +143,18 @@ const About = () => {
                                 </div>
                             </div>
                         </div>
+
                         <div
                             className="relative w-[512px] h-[512px] hidden lg:flex shrink-0 items-center justify-center reveal lg:-mr-8 xl:-mr-12"
                             style={{ transitionDelay: '200ms' }}
                         >
+                            {/* Spinning border ring — GPU composited via transform */}
                             <div
                                 className="absolute inset-0 border-2 border-dashed border-white/10 rounded-full"
                                 style={{ animation: 'spin 10s linear infinite', willChange: 'transform' }}
                             />
+
+                            {/* Rotating orbit text — isolated GPU layer */}
                             <svg
                                 className="absolute inset-0 w-full h-full pointer-events-none"
                                 viewBox="0 0 512 512"
@@ -160,6 +178,7 @@ const About = () => {
                                     </textPath>
                                 </text>
                             </svg>
+
                             <div className="absolute inset-6 border border-white/5 rounded-full pointer-events-none" />
                             <TiltPhoto src={finalImg} />
                         </div>
