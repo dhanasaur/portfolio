@@ -4,7 +4,6 @@ const sections = [
     { id: 'root', label: 'Hero' },
     { id: 'about', label: 'About' },
     { id: 'skills', label: 'Skills' },
-    { id: 'ai-showcase', label: 'AI/ML' },
     { id: 'projects', label: 'Projects' },
     { id: 'contact', label: 'Contact' },
 ];
@@ -48,27 +47,23 @@ const SectionNavDots = () => {
     };
 
     return (
-        <div className="hidden md:flex fixed right-6 top-1/2 -translate-y-1/2 flex-col gap-5 z-50">
+        <div className="hidden md:flex fixed right-6 top-1/2 -translate-y-1/2 flex-col gap-6 z-50">
             {sections.map(({ id, label }) => {
                 const isActive = activeSection === id;
                 return (
                     <div key={id} className="relative group flex items-center justify-end">
-                        <span className="absolute right-5 opacity-0 group-hover:opacity-100 transition-[opacity] duration-250 text-[10px] text-white uppercase tracking-[0.2em] mr-2 whitespace-nowrap pointer-events-none">
+                        <span className="absolute right-6 opacity-0 group-hover:opacity-100 transition-[opacity] duration-250 text-xs text-white uppercase tracking-widest mr-2 whitespace-nowrap pointer-events-none">
                             {label}
                         </span>
                         <button
                             onClick={() => scrollTo(id)}
-                            className="focus:outline-none"
+                            className={`rounded-full transition-[background-color,transform] duration-300 ease-out focus:outline-none ${
+                                isActive
+                                    ? 'w-2 h-2 bg-white scale-150'
+                                    : 'w-2 h-2 bg-white/20 hover:bg-white/60'
+                            }`}
                             aria-label={`Scroll to ${label}`}
-                        >
-                            <div
-                                className={`rounded-full transition-[width,height,background-color] duration-300 ease-out ${
-                                    isActive
-                                        ? 'w-2.5 h-2.5 bg-white'
-                                        : 'w-1.5 h-1.5 bg-white/20 hover:bg-white/50'
-                                }`}
-                            />
-                        </button>
+                        />
                     </div>
                 );
             })}

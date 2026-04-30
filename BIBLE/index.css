@@ -190,4 +190,12 @@ html {
         transform: none !important;
     }
 }
-/* Removed content-visibility as it breaks ResizeObservers and IntersectionObservers */
+
+/* ──────────────────────────────────────────────
+   CONTENT VISIBILITY — defer off-screen paint
+   (Significant performance win on long pages)
+────────────────────────────────────────────── */
+#skills, #achievements, #projects, #contact {
+    content-visibility: auto;
+    contain-intrinsic-size: 0 600px; /* approximate section height */
+}

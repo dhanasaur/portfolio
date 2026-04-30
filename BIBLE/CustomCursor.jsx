@@ -74,6 +74,7 @@ const CustomCursor = () => {
                     borderRadius: '50%',
                     border: '1px solid rgba(255,255,255,0.7)',
                     willChange: 'transform',
+                    // Specific properties only — no transition-all
                     transition: 'width 0.25s ease, height 0.25s ease, background-color 0.25s ease',
                     width: isHovering ? '52px' : '36px',
                     height: isHovering ? '52px' : '36px',
